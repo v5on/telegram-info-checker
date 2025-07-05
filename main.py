@@ -5,7 +5,7 @@ import httpx
 
 app = FastAPI()
 
-# Allow CORS from all origins (adjust in production)
+# Allow all CORS (adjust in production)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,7 +14,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Correct upstream URL with HTTPS
 UPSTREAM_BASE_URL = "https://tele-user-info-api-production.up.railway.app"
 
 @app.get("/check")
