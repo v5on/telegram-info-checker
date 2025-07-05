@@ -14,30 +14,68 @@
       flex-direction: column;
       min-height: 100vh;
       align-items: center;
-      justify-content: flex-start;
     }
-    h1, h2 {
+
+    header {
+      background-color: #ffffff;
+      width: 100%;
+      padding: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
       color: #2c3e50;
-      margin-top: 1rem;
     }
-    .container {
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 1200px;
+      padding: 1rem;
+    }
+
+    .card-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .card-container {
+        flex-direction: row;
+      }
+    }
+
+    .card {
+      flex: 1;
       background: white;
       padding: 1.5rem;
-      margin: 1rem;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 90%;
-      max-width: 550px;
     }
+
+    h2 {
+      color: #2c3e50;
+      margin-top: 0;
+    }
+
     textarea, input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 1rem;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-      resize: vertical;
-    }
+  width: 100%;
+  height: 50px;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+
     button {
       width: 100%;
       padding: 12px;
@@ -49,9 +87,11 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
+
     button:hover {
       background-color: #0056b3;
     }
+
     pre {
       background: #272822;
       color: #f8f8f2;
@@ -62,64 +102,84 @@
       word-wrap: break-word;
       max-height: 400px;
     }
+
     .error {
       color: red;
       margin-top: 1rem;
     }
+
     .section-title {
-      margin-top: 2rem;
       font-size: 1.2rem;
       font-weight: bold;
     }
+
+    .api-doc {
+      margin-top: 2rem;
+    }
+
     footer {
-      margin-top: auto;
+      margin-top: 2rem;
       padding: 1rem;
       font-size: 0.8rem;
       color: #777;
+      text-align: center;
     }
+
     a {
       color: #007bff;
       text-decoration: none;
     }
+
     a:hover {
       text-decoration: underline;
     }
   </style>
 </head>
 <body>
-
-  <div class="container">
+  
+  <header>
     <h1>Telegram Info Checker</h1>
+  </header>
 
-    <!-- Username section -->
-    <h2 class="section-title">🔎 Username / Chat Lookup</h2>
-    <input type="text" id="usernameInput" placeholder="Enter Telegram username (without @ or full @username)" />
-    <button onclick="fetchUserInfo()">Get Info</button>
-    <div id="usernameResult" class="result-box"></div>
+  <div class="main-content">
+    <div class="card-container">
 
-    <!-- Phone section -->
-    <h2 class="section-title">📞 Phone Number Lookup</h2>
-<textarea id="phoneInput" rows="4" placeholder="Enter phone numbers (one per line), like:
-8801XXXXXXXX
+      <!-- Username Section -->
+      <div class="card">
+        <h2 class="section-title">🔎 Username / Chat Lookup</h2>
+        <input type="text" id="usernameInput" placeholder="Enter Telegram username (without @ or full @username)" />
+        <button onclick="fetchUserInfo()">Get Info</button>
+        <div id="usernameResult" class="result-box"></div>
+      </div>
+
+      <!-- Phone Section -->
+      <div class="card">
+        <h2 class="section-title">📞 Phone Number Lookup</h2>
+        <textarea id="phoneInput" rows="6" placeholder="8801XXXXXXXX [Enter phone numbers in per line]
 8801YYYYYYYY"></textarea>
-    <button onclick="checkPhones()">Check Numbers</button>
-    <div id="phoneResult" class="result-box"></div>
-  </div>
+        <button onclick="checkPhones()">Check Numbers</button>
+        <div id="phoneResult" class="result-box"></div>
+      </div>
 
-  <!-- API Documentation -->
-  <div class="container">
-    <h2 class="section-title">📚 API Documentation</h2>
-    <pre>
+    </div>
+
+    <!-- API Documentation -->
+    <div class="card api-doc">
+      <h2 class="section-title">📚 API Documentation</h2>
+      <pre>
 GET /api/check?phones=8801XXXXXXXXX,8801YYYYYYYY
 → Check Telegram accounts by phone number(s)
 
 GET /api/get_user_info?username=@username
 → Get Telegram user info by username
-    </pre>
+
+⚠️ These APIs are proxied and protected. Original backend is hidden.
+      </pre>
+    </div>
   </div>
-  
+
   <footer>
-    Powered by <a href="https://t.me/bbinl_cc_bot">bbinl cc bot</a> 
+    Powered by <a href="https://t.me/bbinl_cc_bot">bbinl cc bot</a>
   </footer>
 
   <script>
@@ -197,5 +257,6 @@ GET /api/get_user_info?username=@username
       }
     }
   </script>
+
 </body>
 </html>
