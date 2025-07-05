@@ -14,7 +14,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-UPSTREAM_BASE_URL = "https://tele-user-info-api-production.up.railway.app"
+UPSTREAM_BASE_URL = "tele-user-info-api-production.up.railway.app"
 
 @app.get("/api/check")
 async def check_phones(phones: str = Query(...)):
