@@ -183,80 +183,64 @@ GET /api/get_user_info?username=@username
   </footer>
 
   <script>
-    async function fetchUserInfo() {
-      const username = document.getElementById('usernameInput').value.trim();
-      const resultBox = document.getElementById('usernameResult');
-      resultBox.innerHTML = "";
+  async function fetchUserInfo() {
+    const username = document.getElementById('usernameInput').value.trim();
+    const resultBox = document.getElementById('usernameResult');
+    resultBox.innerHTML = "";
 
-      if (!username) {
-        resultBox.innerHTML = '<p class="error">Please enter a username.</p>';
-        return;
-      }
-
-      resultBox.innerHTML = 'Loading...';
-
-      try {
-        const response = await fetch(`/api/get_user_info?username=${encodeURIComponent(username)}`);
-        const text = await response.text();
-
-        if (response.ok) {
-          resultBox.innerHTML = `<pre>${text}</pre>`;
-        } else {
-          resultBox.innerHTML = `<p class="error">Error: ${text}</p>`;
-        }
-      } catch (err) {
-        resultBox.innerHTML = `<p class="error">Network error: ${err.message}</p>`;
-      }
+    if (!username) {
+      resultBox.innerHTML = '<p class="error">Please enter a username.</p>';
+      return;
     }
 
-    async function checkPhones() {
-      const input = document.getElementById("phoneInput").value.trim();
-      const phoneResult = document.getElementById("phoneResult");
-      phoneResult.innerHTML = "";
+    resultBox.innerHTML = 'Loading...';
 
-      if (!input) {
-        phoneResult.innerHTML = '<p class="error">Please enter phone numbers.</p>';
-        return;
+    try {
+      const response = await fetch(`/api/get_user_info?username=${encodeURIComponent(username)}`);
+      const text = await response.text();
+
+      if (response.ok) {
+        resultBox.innerHTML = `<pre>${text.trim()}</pre>`;
+      } else {
+        resultBox.innerHTML = `<p class="error">Error: ${text}</p>`;
       }
-
-      const phones = input.split("\n").map(p => p.trim()).filter(p => p);
-      if (phones.length === 0) {
-        phoneResult.innerHTML = '<p class="error">No valid phone numbers found.</p>';
-        return;
-      }
-
-      phoneResult.innerHTML = 'Checking...';
-
-      try {
-        const res = await fetch(`/api/check?phones=${phones.join(",")}`);
-        const data = await res.json();
-
-        const valid = [];
-        const invalid = [];
-
-        data.results.forEach(user => {
-          if (user.username || user.first_name) {
-            const name = user.username ? `@${user.username}` : `${user.first_name} ${user.last_name || ''}`;
-            valid.push(`✅ ${user.phone} → ${name}`);
-          } else {
-            invalid.push(`❌ ${user.phone} → No Telegram account found`);
-          }
-        });
-
-        let output = "";
-        if (valid.length) {
-          output += "✅ Valid Accounts:\n" + valid.join("\n") + "\n\n";
-        }
-        if (invalid.length) {
-          output += "❌ Invalid Accounts:\n" + invalid.join("\n");
-        }
-
-        phoneResult.innerHTML = `<pre>${output.trim()}</pre>`;
-      } catch (err) {
-        phoneResult.innerHTML = `<p class="error">Error: ${err.message}</p>`;
-      }
+    } catch (err) {
+      resultBox.innerHTML = `<p class="error">Network error: ${err.message}</p>`;
     }
-  </script>
+  }
+
+  async function checkPhones() {
+    const input = document.getElementById("phoneInput").value.trim();
+    const phoneResult = document.getElementById("phoneResult");
+    phoneResult.innerHTML = "";
+
+    if (!input) {
+      phoneResult.innerHTML = '<p class="error">Please enter phone numbers.</p>';
+      return;
+    }
+
+    const phones = input.split("\n").map(p => p.trim()).filter(p => p);
+    if (phones.length === 0) {
+      phoneResult.innerHTML = '<p class="error">No valid phone numbers found.</p>';
+      return;
+    }
+
+    phoneResult.innerHTML = 'Checking...';
+
+    try {
+      const res = await fetch(`/api/check?phones=${phones.join(",")}`);
+      const text = await res.text();
+
+      if (res.ok) {
+        phoneResult.innerHTML = `<pre>${text.trim()}</pre>`;
+      } else {
+        phoneResult.innerHTML = `<p class="error">Error: ${text}</p>`;
+      }
+    } catch (err) {
+      phoneResult.innerHTML = `<p class="error">Network error: ${err.message}</p>`;
+    }
+  }
+</script>
 
 </body>
 </html>
