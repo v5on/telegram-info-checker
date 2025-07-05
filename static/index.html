@@ -103,19 +103,20 @@
     <button onclick="checkPhones()">Check Numbers</button>
     <div id="phoneResult" class="result-box"></div>
   </div>
-<!-- Add this before </body> -->
-<div class="container">
-  <h2 class="section-title">📚 API Documentation</h2>
-  <pre>
+
+  <!-- API Documentation -->
+  <div class="container">
+    <h2 class="section-title">📚 API Documentation</h2>
+    <pre>
 GET /api/check?phones=8801XXXXXXXXX[,8801YYYYYYYY]
-→ Check Telegram accounts by phone number(s).
+→ Check Telegram accounts by phone number(s)
 
 GET /api/get_user_info?username=@username
-→ Get Telegram user info by username.
+→ Get Telegram user info by username
 
-⚠️ Note: All API traffic is proxied. Original endpoints are protected.
-  </pre>
-</div>
+⚠️ These APIs are proxied and protected. Original backend is hidden.
+    </pre>
+  </div>
 
   <footer>
     Powered by <a href="https://t.me/bbinl_cc_bot">bbinl cc bot</a> &middot;
@@ -136,7 +137,7 @@ GET /api/get_user_info?username=@username
       resultBox.innerHTML = 'Loading...';
 
       try {
-        const response = await fetch(`/get_user_info?username=${encodeURIComponent(username)}`);
+        const response = await fetch(`/api/get_user_info?username=${encodeURIComponent(username)}`);
         const text = await response.text();
 
         if (response.ok) {
@@ -168,7 +169,7 @@ GET /api/get_user_info?username=@username
       phoneResult.innerHTML = 'Checking...';
 
       try {
-        const res = await fetch(`/check?phones=${phones.join(",")}`);
+        const res = await fetch(`/api/check?phones=${phones.join(",")}`);
         const data = await res.json();
 
         const valid = [];
