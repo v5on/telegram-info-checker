@@ -16,13 +16,13 @@ app.add_middleware(
 
 UPSTREAM_BASE_URL = "tele-user-info-api-production.up.railway.app"
 
-@app.get("/api/check")
+@app.get("/check")
 async def check_phones(phones: str = Query(...)):
     async with httpx.AsyncClient() as client:
         resp = await client.get(f"{UPSTREAM_BASE_URL}/check", params={"phones": phones})
         return JSONResponse(content=resp.json(), status_code=resp.status_code)
 
-@app.get("/api/get_user_info")
+@app.get("/get_user_info")
 async def get_user_info(username: str = Query(...)):
     async with httpx.AsyncClient() as client:
         resp = await client.get(f"{UPSTREAM_BASE_URL}/get_user_info", params={"username": username})
